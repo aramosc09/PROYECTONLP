@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        h1 {
+            color: #4A90E2;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .input-container input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .input-container button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #4A90E2;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .input-container button:hover {
+            background-color: #357ABD;
+        }
+
+        .history-container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .history-entry {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-entry .text {
+            flex-grow: 1;
+        }
+
+        .history-entry button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            background-color: #E74C3C;
+            color: white;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .history-entry button:hover {
+            background-color: #C0392B;
+        }
+    </style>
+</head>
+<body>
+    <h1>LLM Translator</h1>
+    <form class="input-container" method="POST" action="/">
+        <input type="text" id="query" name="query" placeholder="Write something to translate..." required>
+        <button type="submit">Translate</button>
+    </form>
+    <div class="history-container">
+        {% for item in history %}
+        <div class="history-entry">
+            <div class="text">
+                <div class="input-label"><strong>Input:</strong> {{ item.user or "No input provided" }}</div>
+                <div class="translation"><strong>Translation:</strong> {{ item.ai or "No translation available" }}</div>
+            </div>
+            <form method="POST" action="/delete" style="margin: 0;">
+                <input type="hidden" name="index" value="{{ loop.index0 }}">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
